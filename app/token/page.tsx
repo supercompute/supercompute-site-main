@@ -73,6 +73,19 @@ export default function TokenPage() {
               Contracts launching on Base · Phase 1 May 2026
             </span>
           </div>
+          <img
+            src="/quanta.jpg"
+            alt="$SCOM"
+            style={{
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              margin: "0 auto 1rem",
+              display: "block",
+              boxShadow: "0 4px 16px rgba(233,30,140,0.2)",
+            }}
+          />
           <h1
             style={{
               fontSize: "clamp(2rem, 5vw, 3rem)",

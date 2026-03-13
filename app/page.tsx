@@ -209,6 +209,19 @@ export default function HomePage() {
               textAlign: "center",
             }}
           >
+            <img
+              src="/quanta.jpg"
+              alt="$SCOM"
+              style={{
+                width: "64px",
+                height: "64px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                margin: "0 auto 0.75rem",
+                display: "block",
+                boxShadow: "0 2px 8px rgba(233,30,140,0.2)",
+              }}
+            />
             <div
               style={{
                 fontSize: "0.7rem",

@@ -91,24 +91,17 @@ export default function Sidebar() {
       {/* Logo / Brand */}
       <div style={{ padding: "0 1.25rem 1.5rem" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.625rem", textDecoration: "none" }}>
-          <div
+          <img
+            src="/supercompute_logo.png"
+            alt="Supercompute"
             style={{
               width: "36px",
               height: "36px",
               borderRadius: "50%",
-              background: "linear-gradient(135deg, #E91E8C, #F97316)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontSize: "0.75rem",
-              fontWeight: 800,
+              objectFit: "cover",
               flexShrink: 0,
-              letterSpacing: "0.02em",
             }}
-          >
-            SC
-          </div>
+          />
           <div>
             <div
               style={{
