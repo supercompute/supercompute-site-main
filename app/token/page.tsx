@@ -11,17 +11,24 @@ const productCoins = [
 ];
 
 function StatusBadge({ status }: { status: string }) {
-  const colors: Record<string, { bg: string; text: string }> = {
-    Live: { bg: "#052e1c", text: "#4ade80" },
-    "Pre-launch": { bg: "#00D4FF22", text: "#00D4FF" },
-    "In Progress": { bg: "#2c1f05", text: "#FFB800" },
-    "Coming Soon": { bg: "#1a2240", text: "#94a3b8" },
+  const styles: Record<string, { bg: string; color: string }> = {
+    Live:          { bg: "#DCFCE7", color: "#16A34A" },
+    "Pre-launch":  { bg: "#FFF1F2", color: "#E91E8C" },
+    "In Progress": { bg: "#FEF3C7", color: "#D97706" },
+    "Coming Soon": { bg: "#F3F4F6", color: "#6B7280" },
   };
-  const c = colors[status] ?? colors["Coming Soon"];
+  const s = styles[status] ?? styles["Coming Soon"];
   return (
     <span
-      className="text-xs font-semibold px-2 py-0.5 rounded-full"
-      style={{ backgroundColor: c.bg, color: c.text }}
+      style={{
+        display: "inline-block",
+        backgroundColor: s.bg,
+        color: s.color,
+        borderRadius: "9999px",
+        padding: "0.2rem 0.6rem",
+        fontSize: "0.72rem",
+        fontWeight: 600,
+      }}
     >
       {status}
     </span>
@@ -30,117 +37,164 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function TokenPage() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#0A0E1A" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-          <div>
-            <h1
-              className="text-3xl sm:text-4xl font-black uppercase tracking-tight"
-              style={{ color: "#00D4FF" }}
-            >
-              Token Launch
-            </h1>
-            <p className="mt-2 text-slate-400 text-sm">
-              $SCOM — the Supercompute builder coin. Staking, LP, and the full
-              product coin ecosystem on Base.
-            </p>
-          </div>
+    <div style={{ backgroundColor: "#FFFFFF" }}>
+      {/* Hero */}
+      <section
+        style={{
+          background: "linear-gradient(180deg, #FDF2F8 0%, #FFFFFF 60%)",
+          padding: "4rem 1.5rem 3rem",
+        }}
+      >
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <div
-            className="text-xs px-3 py-1.5 rounded-full font-semibold"
-            style={{ backgroundColor: "#1a2240", color: "#FFB800" }}
-          >
-            Contracts launching on Base · Phase 1 May 2026
-          </div>
-        </div>
-
-        {/* $SCOM Overview */}
-        <section className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-          {[
-            { label: "Token", value: "$SCOM" },
-            { label: "Price", value: "$0.00" },
-            { label: "Total Supply", value: "100,000,000" },
-            { label: "Network", value: "Base" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="rounded-xl p-5 text-center"
-              style={{
-                backgroundColor: "#0D1220",
-                border: "1px solid #1a2240",
-              }}
-            >
-              <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">
-                {item.label}
-              </div>
-              <div
-                className="text-lg font-black font-mono"
-                style={{ color: "#FFB800" }}
-              >
-                {item.value}
-              </div>
-            </div>
-          ))}
-        </section>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-          {/* Staking Panel */}
-          <div
-            className="rounded-xl p-6"
             style={{
-              backgroundColor: "#0D1220",
-              border: "1px solid #1a2240",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              backgroundColor: "#FFF1F2",
+              color: "#E91E8C",
+              borderRadius: "9999px",
+              padding: "0.25rem 0.875rem",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              marginBottom: "1rem",
             }}
           >
-            <h2 className="text-base font-bold text-white mb-1">Staking</h2>
-            <p className="text-xs text-slate-500 mb-4">
+            <span
+              style={{
+                backgroundColor: "#FEF3C7",
+                color: "#D97706",
+                borderRadius: "9999px",
+                padding: "0.1rem 0.5rem",
+                fontSize: "0.65rem",
+                fontWeight: 700,
+              }}
+            >
+              Contracts launching on Base · Phase 1 May 2026
+            </span>
+          </div>
+          <h1
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3rem)",
+              fontWeight: 800,
+              color: "#1A1A2E",
+              letterSpacing: "-0.02em",
+              margin: "0 0 0.75rem",
+            }}
+          >
+            Token Launch
+          </h1>
+          <p style={{ color: "#6B7280", fontSize: "1rem", margin: 0 }}>
+            $SCOM — the Supercompute builder coin. Staking, LP, and the full product coin ecosystem on Base.
+          </p>
+        </div>
+      </section>
+
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
+        {/* $SCOM Overview Stats */}
+        <section style={{ marginBottom: "2.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "1rem" }}>
+            {[
+              { label: "Token", value: "$SCOM" },
+              { label: "Price", value: "$0.00" },
+              { label: "Total Supply", value: "100,000,000" },
+              { label: "Network", value: "Base" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: "16px",
+                  boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+                  padding: "1.5rem",
+                  textAlign: "center",
+                }}
+              >
+                <div style={{ fontSize: "0.7rem", color: "#6B7280", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.5rem" }}>
+                  {item.label}
+                </div>
+                <div
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 800,
+                    background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {item.value}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Staking + LP panels */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
+          {/* Staking Panel */}
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "16px",
+              boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+              padding: "1.75rem",
+            }}
+          >
+            <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#1A1A2E", margin: "0 0 0.25rem" }}>Staking</h2>
+            <p style={{ fontSize: "0.8rem", color: "#9CA3AF", marginBottom: "1.25rem" }}>
               Stake $SCOM to earn rewards. Contracts not yet deployed.
             </p>
-
-            <div className="flex justify-between text-sm mb-4">
-              <span className="text-slate-400">Mock APY</span>
-              <span className="font-mono" style={{ color: "#00D4FF" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", marginBottom: "1rem" }}>
+              <span style={{ color: "#6B7280" }}>Mock APY</span>
+              <span
+                style={{
+                  fontWeight: 700,
+                  background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 —%
               </span>
             </div>
-
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs text-slate-500 mb-1 block">
-                  Stake Amount
-                </label>
-                <input
-                  disabled
-                  placeholder="0.00 $SCOM"
-                  className="w-full rounded-lg px-3 py-2 text-sm text-slate-500 cursor-not-allowed"
-                  style={{
-                    backgroundColor: "#1a2240",
-                    border: "1px solid #2a3460",
-                    color: "#64748b",
-                  }}
-                />
-              </div>
-              <div>
-                <label className="text-xs text-slate-500 mb-1 block">
-                  Unstake Amount
-                </label>
-                <input
-                  disabled
-                  placeholder="0.00 $SCOM"
-                  className="w-full rounded-lg px-3 py-2 text-sm cursor-not-allowed"
-                  style={{
-                    backgroundColor: "#1a2240",
-                    border: "1px solid #2a3460",
-                    color: "#64748b",
-                  }}
-                />
-              </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {["Stake Amount", "Unstake Amount"].map((label) => (
+                <div key={label}>
+                  <label style={{ fontSize: "0.75rem", color: "#9CA3AF", display: "block", marginBottom: "0.35rem" }}>{label}</label>
+                  <input
+                    disabled
+                    placeholder="0.00 $SCOM"
+                    style={{
+                      width: "100%",
+                      padding: "0.5rem 0.75rem",
+                      borderRadius: "8px",
+                      border: "1px solid #E5E7EB",
+                      backgroundColor: "#F9FAFB",
+                      fontSize: "0.875rem",
+                      color: "#9CA3AF",
+                      cursor: "not-allowed",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                </div>
+              ))}
             </div>
-
             <button
               disabled
-              className="mt-4 w-full py-2 text-sm font-semibold rounded-lg cursor-not-allowed"
-              style={{ backgroundColor: "#1a2240", color: "#64748b" }}
+              style={{
+                marginTop: "1rem",
+                width: "100%",
+                padding: "0.6rem",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                borderRadius: "8px",
+                border: "1px solid #E5E7EB",
+                backgroundColor: "#F9FAFB",
+                color: "#9CA3AF",
+                cursor: "not-allowed",
+              }}
             >
               Coming Soon
             </button>
@@ -148,41 +202,52 @@ export default function TokenPage() {
 
           {/* LP Panel */}
           <div
-            className="rounded-xl p-6"
             style={{
-              backgroundColor: "#0D1220",
-              border: "1px solid #1a2240",
+              backgroundColor: "#fff",
+              borderRadius: "16px",
+              boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+              padding: "1.75rem",
             }}
           >
-            <h2 className="text-base font-bold text-white mb-1">
-              Liquidity Pool
-            </h2>
-            <p className="text-xs text-slate-500 mb-4">
+            <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#1A1A2E", margin: "0 0 0.25rem" }}>Liquidity Pool</h2>
+            <p style={{ fontSize: "0.8rem", color: "#9CA3AF", marginBottom: "1.25rem" }}>
               Add liquidity to the $SCOM / ETH pool on Base. LP not yet live.
             </p>
-
-            <div className="space-y-2 text-sm mb-4">
+            <div style={{ display: "flex", flexDirection: "column", gap: "0", marginBottom: "1.25rem" }}>
               {[
                 { label: "Pool Pair", value: "$SCOM / ETH" },
                 { label: "Liquidity Depth", value: "$0 (placeholder)" },
                 { label: "Fee Tier", value: "0.30%" },
                 { label: "Protocol", value: "Uniswap v3 on Base" },
-              ].map((row) => (
+              ].map((row, i) => (
                 <div
                   key={row.label}
-                  className="flex justify-between py-1"
-                  style={{ borderBottom: "1px solid #1a2240" }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "0.6rem 0",
+                    borderBottom: i < 3 ? "1px solid #F3F4F6" : "none",
+                    fontSize: "0.875rem",
+                  }}
                 >
-                  <span className="text-slate-500">{row.label}</span>
-                  <span className="font-mono text-slate-300">{row.value}</span>
+                  <span style={{ color: "#6B7280" }}>{row.label}</span>
+                  <span style={{ color: "#1A1A2E", fontWeight: 500 }}>{row.value}</span>
                 </div>
               ))}
             </div>
-
             <button
               disabled
-              className="w-full py-2 text-sm font-semibold rounded-lg cursor-not-allowed"
-              style={{ backgroundColor: "#1a2240", color: "#64748b" }}
+              style={{
+                width: "100%",
+                padding: "0.6rem",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                borderRadius: "8px",
+                border: "1px solid #E5E7EB",
+                backgroundColor: "#F9FAFB",
+                color: "#9CA3AF",
+                cursor: "not-allowed",
+              }}
             >
               Add Liquidity (Coming Soon)
             </button>
@@ -190,32 +255,34 @@ export default function TokenPage() {
         </div>
 
         {/* Product Coin Table */}
-        <section>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
-            Ecosystem Coins
-          </h2>
+        <section style={{ marginBottom: "2.5rem" }}>
           <div
-            className="rounded-xl overflow-hidden"
-            style={{ border: "1px solid #1a2240" }}
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#6B7280",
+              marginBottom: "1.25rem",
+            }}
           >
-            <table className="w-full text-sm">
+            Ecosystem Coins
+          </div>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "16px",
+              boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+              overflow: "hidden",
+            }}
+          >
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem" }}>
               <thead>
-                <tr style={{ backgroundColor: "#0D1220" }}>
-                  <th className="text-left px-4 py-3 text-xs uppercase tracking-wider text-slate-500">
-                    Project
-                  </th>
-                  <th className="text-left px-4 py-3 text-xs uppercase tracking-wider text-slate-500">
-                    Coin
-                  </th>
-                  <th className="text-right px-4 py-3 text-xs uppercase tracking-wider text-slate-500">
-                    Price
-                  </th>
-                  <th className="text-right px-4 py-3 text-xs uppercase tracking-wider text-slate-500 hidden sm:table-cell">
-                    Volume (24h)
-                  </th>
-                  <th className="text-right px-4 py-3 text-xs uppercase tracking-wider text-slate-500">
-                    Status
-                  </th>
+                <tr style={{ borderBottom: "1px solid #F3F4F6" }}>
+                  <th style={{ textAlign: "left", padding: "0.875rem 1.25rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#6B7280", fontWeight: 700 }}>Project</th>
+                  <th style={{ textAlign: "left", padding: "0.875rem 1.25rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#6B7280", fontWeight: 700 }}>Coin</th>
+                  <th style={{ textAlign: "right", padding: "0.875rem 1.25rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#6B7280", fontWeight: 700 }}>Price</th>
+                  <th style={{ textAlign: "right", padding: "0.875rem 1.25rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "#6B7280", fontWeight: 700 }}>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -223,26 +290,25 @@ export default function TokenPage() {
                   <tr
                     key={row.project}
                     style={{
-                      backgroundColor: i % 2 === 0 ? "#0a0e1a" : "#0D1220",
-                      borderTop: "1px solid #1a2240",
+                      backgroundColor: i % 2 === 0 ? "#FFFFFF" : "#FAFAFA",
+                      borderTop: "1px solid #F3F4F6",
                     }}
                   >
-                    <td className="px-4 py-3 text-slate-200 font-medium">
-                      {row.project}
-                    </td>
+                    <td style={{ padding: "0.875rem 1.25rem", color: "#1A1A2E", fontWeight: 500 }}>{row.project}</td>
                     <td
-                      className="px-4 py-3 font-mono font-bold"
-                      style={{ color: "#FFB800" }}
+                      style={{
+                        padding: "0.875rem 1.25rem",
+                        fontWeight: 700,
+                        background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      }}
                     >
                       {row.coin}
                     </td>
-                    <td className="px-4 py-3 text-right font-mono text-slate-300">
-                      {row.price}
-                    </td>
-                    <td className="px-4 py-3 text-right font-mono text-slate-500 hidden sm:table-cell">
-                      {row.volume}
-                    </td>
-                    <td className="px-4 py-3 text-right">
+                    <td style={{ padding: "0.875rem 1.25rem", textAlign: "right", color: "#6B7280", fontFamily: "monospace" }}>{row.price}</td>
+                    <td style={{ padding: "0.875rem 1.25rem", textAlign: "right" }}>
                       <StatusBadge status={row.status} />
                     </td>
                   </tr>
@@ -253,15 +319,24 @@ export default function TokenPage() {
         </section>
 
         {/* Connect Wallet CTA */}
-        <div className="mt-10 text-center">
+        <div style={{ textAlign: "center" }}>
           <button
             disabled
-            className="px-8 py-3 text-sm font-semibold rounded-lg cursor-not-allowed opacity-70"
-            style={{ backgroundColor: "#00D4FF", color: "#0A0E1A" }}
+            style={{
+              padding: "0.75rem 2rem",
+              fontSize: "0.9rem",
+              fontWeight: 600,
+              borderRadius: "8px",
+              background: "linear-gradient(135deg, #E91E8C, #F97316)",
+              color: "#fff",
+              border: "none",
+              cursor: "not-allowed",
+              opacity: 0.6,
+            }}
           >
             Connect Wallet (Coming Soon)
           </button>
-          <p className="mt-2 text-xs text-slate-600">
+          <p style={{ marginTop: "0.5rem", fontSize: "0.8rem", color: "#9CA3AF" }}>
             Contracts launching on Base — Phase 1 May 2026
           </p>
         </div>

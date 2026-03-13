@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import Sidebar from "@/components/Sidebar";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -28,12 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        style={{ backgroundColor: "#0A0E1A", color: "#e2e8f0" }}
+        className={`${geistMono.variable} antialiased`}
+        style={{ backgroundColor: "#F9FAFB", color: "#374151", fontFamily: "'Wix Madefor Text', system-ui, sans-serif" }}
       >
-        <Nav />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <div style={{ display: "flex", minHeight: "100vh" }}>
+          <Sidebar />
+          <main style={{ flex: 1, backgroundColor: "#FFFFFF", minHeight: "100vh" }}>
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );

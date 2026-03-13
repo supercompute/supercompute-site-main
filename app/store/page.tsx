@@ -49,48 +49,34 @@ const activeProjects = [
 ];
 
 const comingSoon = [
-  {
-    name: "Nodewaste",
-    description: "Sustainable node infrastructure and green compute solutions.",
-  },
-  {
-    name: "Solar Punks",
-    description: "Renewable energy meets Web3 culture.",
-  },
-  {
-    name: "RBL",
-    description: "Radical Black Love — culture, community, and on-chain identity.",
-  },
-  {
-    name: "Athletic Club",
-    description: "Sports, fitness, and athlete community on-chain.",
-  },
-  {
-    name: "Ninja School",
-    description: "Stealth skills, discipline, and Web3 warriors.",
-  },
-  {
-    name: "Web3 School",
-    description: "Learn DeFi, NFTs, agents, and on-chain ops for free.",
-  },
-  {
-    name: "Nomad",
-    description: "Digital nomad community, travel, and remote work tools.",
-  },
+  { name: "Nodewaste", description: "Sustainable node infrastructure and green compute solutions." },
+  { name: "Solar Punks", description: "Renewable energy meets Web3 culture." },
+  { name: "RBL", description: "Radical Black Love — culture, community, and on-chain identity." },
+  { name: "Athletic Club", description: "Sports, fitness, and athlete community on-chain." },
+  { name: "Ninja School", description: "Stealth skills, discipline, and Web3 warriors." },
+  { name: "Web3 School", description: "Learn DeFi, NFTs, agents, and on-chain ops for free." },
+  { name: "Nomad", description: "Digital nomad community, travel, and remote work tools." },
 ];
 
 function StatusBadge({ status }: { status: string }) {
-  const colors: Record<string, { bg: string; text: string }> = {
-    Live: { bg: "#052e1c", text: "#4ade80" },
-    "In Progress": { bg: "#2c1f05", text: "#FFB800" },
-    Available: { bg: "#00D4FF22", text: "#00D4FF" },
-    "Coming Soon": { bg: "#1a2240", text: "#94a3b8" },
+  const styles: Record<string, { bg: string; color: string }> = {
+    Live:          { bg: "#DCFCE7", color: "#16A34A" },
+    "In Progress": { bg: "#FEF3C7", color: "#D97706" },
+    Available:     { bg: "#FFF1F2", color: "#E91E8C" },
+    "Coming Soon": { bg: "#F3F4F6", color: "#6B7280" },
   };
-  const c = colors[status] ?? colors["Coming Soon"];
+  const s = styles[status] ?? styles["Coming Soon"];
   return (
     <span
-      className="text-xs font-semibold px-2 py-0.5 rounded-full"
-      style={{ backgroundColor: c.bg, color: c.text }}
+      style={{
+        display: "inline-block",
+        backgroundColor: s.bg,
+        color: s.color,
+        borderRadius: "9999px",
+        padding: "0.2rem 0.6rem",
+        fontSize: "0.72rem",
+        fontWeight: 600,
+      }}
     >
       {status}
     </span>
@@ -99,44 +85,102 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function StorePage() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#0A0E1A" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1
-          className="text-3xl sm:text-4xl font-black uppercase tracking-tight"
-          style={{ color: "#00D4FF" }}
-        >
-          Products &amp; Services
-        </h1>
-        <p className="mt-2 text-slate-400 text-sm">
-          Everything built by Supercompute. Services, projects, and ecosystem coins.
-        </p>
+    <div style={{ backgroundColor: "#FFFFFF" }}>
+      {/* Hero */}
+      <section
+        style={{
+          background: "linear-gradient(180deg, #FDF2F8 0%, #FFFFFF 60%)",
+          padding: "4rem 1.5rem 3rem",
+        }}
+      >
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+          <div
+            style={{
+              display: "inline-block",
+              backgroundColor: "#FFF1F2",
+              color: "#E91E8C",
+              borderRadius: "9999px",
+              padding: "0.25rem 0.875rem",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              marginBottom: "1rem",
+            }}
+          >
+            Store
+          </div>
+          <h1
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3rem)",
+              fontWeight: 800,
+              color: "#1A1A2E",
+              letterSpacing: "-0.02em",
+              margin: "0 0 0.75rem",
+            }}
+          >
+            Products &amp; Services
+          </h1>
+          <p style={{ color: "#6B7280", fontSize: "1rem", margin: 0 }}>
+            Everything built by Supercompute. Services, projects, and ecosystem coins.
+          </p>
+        </div>
+      </section>
 
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
         {/* Services */}
-        <section className="mt-12">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
+        <section style={{ marginBottom: "3.5rem" }}>
+          <div
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#6B7280",
+              marginBottom: "1.25rem",
+            }}
+          >
             Services
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem" }}>
             {services.map((s) => (
               <div
                 key={s.name}
-                className="rounded-xl p-6"
                 style={{
-                  backgroundColor: "#0D1220",
-                  border: "1px solid #1a2240",
+                  backgroundColor: "#fff",
+                  borderRadius: "16px",
+                  boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+                  padding: "1.75rem",
                 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-base font-bold text-white">{s.name}</h3>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+                  <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#1A1A2E", margin: 0 }}>{s.name}</h3>
                   <StatusBadge status={s.status} />
                 </div>
-                <p className="text-sm text-slate-400 mb-4">{s.description}</p>
-                <div className="text-sm font-mono" style={{ color: "#FFB800" }}>
+                <p style={{ fontSize: "0.875rem", color: "#6B7280", marginBottom: "1rem", lineHeight: 1.5 }}>{s.description}</p>
+                <div
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 600,
+                    background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    marginBottom: "0.75rem",
+                  }}
+                >
                   {s.price}
                 </div>
                 <button
-                  className="mt-3 w-full py-2 text-xs font-semibold rounded-lg"
-                  style={{ backgroundColor: "#1a2240", color: "#00D4FF" }}
+                  style={{
+                    width: "100%",
+                    padding: "0.5rem",
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                    borderRadius: "8px",
+                    border: "1px solid #E5E7EB",
+                    backgroundColor: "#fff",
+                    color: "#374151",
+                    cursor: "pointer",
+                  }}
                 >
                   Inquire →
                 </button>
@@ -146,38 +190,64 @@ export default function StorePage() {
         </section>
 
         {/* Active Projects */}
-        <section className="mt-14">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
+        <section style={{ marginBottom: "3.5rem" }}>
+          <div
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#6B7280",
+              marginBottom: "1.25rem",
+            }}
+          >
             Active Projects
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem" }}>
             {activeProjects.map((p) => (
               <div
                 key={p.name}
-                className="rounded-xl p-6"
                 style={{
-                  backgroundColor: "#0D1220",
-                  border: "1px solid #1a2240",
+                  backgroundColor: "#fff",
+                  borderRadius: "16px",
+                  boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+                  padding: "1.75rem",
                 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-base font-bold text-white">{p.name}</h3>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+                  <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#1A1A2E", margin: 0 }}>{p.name}</h3>
                   <StatusBadge status={p.status} />
                 </div>
-                <p className="text-sm text-slate-400 mb-3">{p.description}</p>
-                <div className="flex items-center justify-between text-xs mt-2">
+                <p style={{ fontSize: "0.875rem", color: "#6B7280", marginBottom: "0.75rem", lineHeight: 1.5 }}>{p.description}</p>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.75rem" }}>
                   <span
-                    className="font-mono font-bold"
-                    style={{ color: "#FFB800" }}
+                    style={{
+                      fontWeight: 700,
+                      background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
                   >
                     {p.coin}
                   </span>
-                  <span className="text-slate-500">{p.price}</span>
+                  <span style={{ color: "#9CA3AF" }}>{p.price}</span>
                 </div>
                 <Link
                   href="/projects"
-                  className="mt-3 block text-center w-full py-2 text-xs font-semibold rounded-lg"
-                  style={{ backgroundColor: "#1a2240", color: "#00D4FF" }}
+                  style={{
+                    display: "block",
+                    textAlign: "center",
+                    width: "100%",
+                    padding: "0.5rem",
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                    borderRadius: "8px",
+                    border: "1px solid #E5E7EB",
+                    backgroundColor: "#fff",
+                    color: "#374151",
+                    textDecoration: "none",
+                  }}
                 >
                   View Project →
                 </Link>
@@ -187,25 +257,36 @@ export default function StorePage() {
         </section>
 
         {/* Coming Soon */}
-        <section className="mt-14">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
+        <section>
+          <div
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#6B7280",
+              marginBottom: "1.25rem",
+            }}
+          >
             Coming Soon
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "0.875rem" }}>
             {comingSoon.map((p) => (
               <div
                 key={p.name}
-                className="rounded-xl p-5 opacity-60"
                 style={{
-                  backgroundColor: "#0D1220",
-                  border: "1px solid #1a2240",
+                  backgroundColor: "#FAFAFA",
+                  borderRadius: "12px",
+                  padding: "1.25rem",
+                  border: "1px solid #F3F4F6",
+                  opacity: 0.8,
                 }}
               >
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-sm font-bold text-slate-300">{p.name}</h3>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                  <h3 style={{ fontSize: "0.875rem", fontWeight: 700, color: "#1A1A2E", margin: 0 }}>{p.name}</h3>
                   <StatusBadge status="Coming Soon" />
                 </div>
-                <p className="text-xs text-slate-500">{p.description}</p>
+                <p style={{ fontSize: "0.78rem", color: "#9CA3AF", margin: 0, lineHeight: 1.4 }}>{p.description}</p>
               </div>
             ))}
           </div>

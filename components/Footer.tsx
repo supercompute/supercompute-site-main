@@ -19,49 +19,58 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer
-      style={{ backgroundColor: "#0D1220", borderTop: "1px solid #1a2240" }}
-      className="w-full mt-16"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <footer style={{ backgroundColor: "#FFF0F6", borderTop: "1px solid #FECDD3" }}>
+      <style>{`
+        .sc-footer-link:hover { color: #E91E8C !important; }
+      `}</style>
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "3rem 1.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "2.5rem" }}>
           {/* Brand */}
           <div>
-            <span
-              className="text-lg font-black tracking-widest uppercase"
-              style={{ color: "#00D4FF" }}
+            <div
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 800,
+                letterSpacing: "0.08em",
+                color: "#1A1A2E",
+              }}
             >
               SUPERCOMPUTE
-            </span>
-            <p className="mt-2 text-sm text-slate-400">
+            </div>
+            <p style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "#6B7280", lineHeight: 1.5 }}>
               1 builder. 13 agents. Building in public on Base.
             </p>
-            {/* Mock $SCOM ticker */}
             <div
-              className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono"
               style={{
-                backgroundColor: "#1a2240",
-                border: "1px solid #FFB800",
-                color: "#FFB800",
+                marginTop: "0.75rem",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.25rem 0.75rem",
+                borderRadius: "9999px",
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                color: "#fff",
               }}
             >
               <span>$SCOM</span>
-              <span className="text-slate-400">$0.00</span>
-              <span className="text-slate-500">· Mock</span>
+              <span style={{ opacity: 0.8 }}>· Phase 1 May 2026</span>
             </div>
           </div>
 
           {/* Site Links */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">
+            <h4 style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B7280", marginBottom: "0.75rem" }}>
               Explore
             </h4>
-            <ul className="space-y-2">
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               {footerLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="sc-footer-link"
+                    style={{ fontSize: "0.875rem", color: "#374151", textDecoration: "none", transition: "color 0.15s" }}
                   >
                     {link.label}
                   </Link>
@@ -72,17 +81,18 @@ export default function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">
+            <h4 style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#6B7280", marginBottom: "0.75rem" }}>
               Community
             </h4>
-            <ul className="space-y-2">
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               {socialLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="sc-footer-link"
+                    style={{ fontSize: "0.875rem", color: "#374151", textDecoration: "none", transition: "color 0.15s" }}
                   >
                     {link.label}
                   </a>
@@ -92,12 +102,22 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2"
-          style={{ borderTop: "1px solid #1a2240" }}>
-          <p className="text-xs text-slate-600">
+        <div
+          style={{
+            marginTop: "2.5rem",
+            paddingTop: "1.5rem",
+            borderTop: "1px solid #FECDD3",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.5rem",
+          }}
+        >
+          <p style={{ fontSize: "0.75rem", color: "#9CA3AF", margin: 0 }}>
             &copy; {new Date().getFullYear()} Supercompute. All rights reserved.
           </p>
-          <p className="text-xs text-slate-600">
+          <p style={{ fontSize: "0.75rem", color: "#9CA3AF", margin: 0 }}>
             Built on Base &middot; Phase 1 launching May 2026
           </p>
         </div>

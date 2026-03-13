@@ -45,60 +45,107 @@ const courseCategories = [
 
 export default function SchoolPage() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#0A0E1A" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1
-          className="text-3xl sm:text-4xl font-black uppercase tracking-tight"
-          style={{ color: "#00D4FF" }}
-        >
-          Web3 School
-        </h1>
-        <p className="mt-2 text-slate-400 text-sm max-w-xl">
-          Free and premium courses on everything Web3 — DeFi, NFTs, AI agents,
-          on-chain operations, and token launches. Built by Supercompute, for
-          builders.
-        </p>
+    <div style={{ backgroundColor: "#FFFFFF" }}>
+      {/* Hero */}
+      <section
+        style={{
+          background: "linear-gradient(180deg, #FDF2F8 0%, #FFFFFF 60%)",
+          padding: "4rem 1.5rem 3rem",
+        }}
+      >
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+          <div
+            style={{
+              display: "inline-block",
+              backgroundColor: "#F3E8FF",
+              color: "#7C3AED",
+              borderRadius: "9999px",
+              padding: "0.25rem 0.875rem",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              marginBottom: "1rem",
+            }}
+          >
+            Web3 School
+          </div>
+          <h1
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3rem)",
+              fontWeight: 800,
+              color: "#1A1A2E",
+              letterSpacing: "-0.02em",
+              margin: "0 0 0.75rem",
+            }}
+          >
+            Web3 School
+          </h1>
+          <p style={{ color: "#6B7280", fontSize: "1rem", margin: 0, maxWidth: "540px" }}>
+            Free and premium courses on everything Web3 — DeFi, NFTs, AI agents, on-chain operations, and token launches. Built by Supercompute, for builders.
+          </p>
+        </div>
+      </section>
 
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
         {/* Course Categories */}
-        <section className="mt-12">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
+        <section style={{ marginBottom: "3.5rem" }}>
+          <div
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#6B7280",
+              marginBottom: "1.25rem",
+            }}
+          >
             Course Categories
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem" }}>
             {courseCategories.map((cat) => (
               <div
                 key={cat.title}
-                className="rounded-xl p-6"
                 style={{
-                  backgroundColor: "#0D1220",
-                  border: "1px solid #1a2240",
+                  backgroundColor: "#fff",
+                  borderRadius: "16px",
+                  boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+                  padding: "1.75rem",
                 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{cat.icon}</span>
-                    <h3 className="text-base font-bold text-white">
-                      {cat.title}
-                    </h3>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <span style={{ fontSize: "1.5rem" }}>{cat.icon}</span>
+                    <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#1A1A2E", margin: 0 }}>{cat.title}</h3>
                   </div>
                   <span
-                    className="text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
                     style={{
-                      backgroundColor:
-                        cat.status === "Free" ? "#052e1c" : "#1a2240",
-                      color: cat.status === "Free" ? "#4ade80" : "#94a3b8",
+                      display: "inline-block",
+                      backgroundColor: cat.status === "Free" ? "#DCFCE7" : "#F3F4F6",
+                      color: cat.status === "Free" ? "#16A34A" : "#6B7280",
+                      borderRadius: "9999px",
+                      padding: "0.2rem 0.6rem",
+                      fontSize: "0.72rem",
+                      fontWeight: 600,
+                      flexShrink: 0,
                     }}
                   >
                     {cat.status}
                   </span>
                 </div>
-                <p className="text-sm text-slate-400 mb-4">{cat.description}</p>
-                <div className="flex items-center justify-between text-xs text-slate-500">
-                  <span>{cat.lessons} lessons planned</span>
+                <p style={{ fontSize: "0.875rem", color: "#6B7280", marginBottom: "1rem", lineHeight: 1.5 }}>{cat.description}</p>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.78rem" }}>
+                  <span style={{ color: "#9CA3AF" }}>{cat.lessons} lessons planned</span>
                   <button
                     disabled
-                    className="px-3 py-1 rounded-lg cursor-not-allowed opacity-60"
-                    style={{ backgroundColor: "#1a2240", color: "#64748b" }}
+                    style={{
+                      padding: "0.3rem 0.75rem",
+                      borderRadius: "8px",
+                      border: "1px solid #E5E7EB",
+                      backgroundColor: "#F9FAFB",
+                      color: "#9CA3AF",
+                      fontSize: "0.75rem",
+                      cursor: "not-allowed",
+                      opacity: 0.7,
+                    }}
                   >
                     Coming Soon
                   </button>
@@ -109,31 +156,48 @@ export default function SchoolPage() {
         </section>
 
         {/* NewsDesk Articles */}
-        <section className="mt-14">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
-            Articles & Content
-          </h2>
+        <section style={{ marginBottom: "2rem" }}>
           <div
-            className="rounded-xl p-6"
             style={{
-              backgroundColor: "#0D1220",
-              border: "1px solid #1a2240",
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#6B7280",
+              marginBottom: "1.25rem",
             }}
           >
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            Articles &amp; Content
+          </div>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "16px",
+              boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+              padding: "1.75rem",
+            }}
+          >
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
               <div>
-                <h3 className="text-base font-bold text-white mb-1">
-                  NewsDesk
-                </h3>
-                <p className="text-sm text-slate-400">
-                  Deep-dive articles, build logs, and Web3 analysis published on
-                  NewsDesk — the Supercompute content platform.
+                <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#1A1A2E", margin: "0 0 0.25rem" }}>NewsDesk</h3>
+                <p style={{ fontSize: "0.875rem", color: "#6B7280", margin: 0 }}>
+                  Deep-dive articles, build logs, and Web3 analysis published on NewsDesk — the Supercompute content platform.
                 </p>
               </div>
               <Link
                 href="/projects"
-                className="flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-lg"
-                style={{ backgroundColor: "#00D4FF22", color: "#00D4FF" }}
+                style={{
+                  display: "inline-block",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "8px",
+                  border: "1px solid #E5E7EB",
+                  backgroundColor: "#fff",
+                  color: "#E91E8C",
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  flexShrink: 0,
+                }}
               >
                 View NewsDesk →
               </Link>
@@ -141,33 +205,33 @@ export default function SchoolPage() {
           </div>
         </section>
 
-        {/* Placeholder upcoming content */}
-        <section className="mt-10">
-          <div
-            className="rounded-xl p-8 text-center"
-            style={{
-              backgroundColor: "#0D1220",
-              border: "1px dashed #1a2240",
-            }}
-          >
-            <div className="text-3xl mb-3">🎓</div>
-            <h3 className="text-base font-semibold text-slate-300 mb-1">
-              Full curriculum coming soon
-            </h3>
-            <p className="text-sm text-slate-500">
-              Follow{" "}
-              <a
-                href="https://x.com/supercompute_io"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#00D4FF" }}
-              >
-                @supercompute_io
-              </a>{" "}
-              to get notified when courses launch.
-            </p>
-          </div>
-        </section>
+        {/* Coming soon placeholder */}
+        <div
+          style={{
+            backgroundColor: "#FAFAFA",
+            borderRadius: "16px",
+            border: "1px dashed #E5E7EB",
+            padding: "3rem",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>🎓</div>
+          <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "#1A1A2E", marginBottom: "0.375rem" }}>
+            Full curriculum coming soon
+          </h3>
+          <p style={{ fontSize: "0.875rem", color: "#6B7280", margin: 0 }}>
+            Follow{" "}
+            <a
+              href="https://x.com/supercompute_io"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#E91E8C", textDecoration: "none", fontWeight: 600 }}
+            >
+              @supercompute_io
+            </a>{" "}
+            to get notified when courses launch.
+          </p>
+        </div>
       </div>
     </div>
   );
