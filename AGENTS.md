@@ -47,5 +47,13 @@ Use: `op item get <item> --vault SCOM` or Coolify environment variable injection
 Add `use context7` to prompts when writing code against any external library.
 Priority libraries: OpenZeppelin, Coolify API, Resend, ethers.js, viem.
 
----
+### Issue Completion Protocol
 
+Before marking any Linear issue as Done:
+1. Post a completion comment on the issue listing what was done
+2. Include verification output (head of file, curl response, test pass, etc.)
+3. State explicitly anything that was deferred or not completed
+
+No comment = not verified = issue stays open.
+
+---
