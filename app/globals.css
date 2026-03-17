@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Syne:wght@600;700;800&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-sc-pink:    #E91E8C;
+  --color-sc-orange:  #F97316;
+  --color-sc-heading: #1A1A2E;
+  --color-sc-body:    #374151;
+  --color-sc-muted:   #6B7280;
+  --color-sc-blush:   #FDF2F8;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'Wix Madefor Text', system-ui, sans-serif;
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Production design system variables */
+:root {
+  --pink:    #E91E8C;
+  --orange:  #F97316;
+  --grad:    linear-gradient(135deg, #E91E8C, #F97316);
+  --heading: #1A1A2E;
+  --body:    #374151;
+  --muted:   #6B7280;
+  --bg:      #FFFFFF;
+  --blush:   #FDF2F8;
+  --footer:  #FFF0F6;
+  --card-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  --radius:  16px;
+
+  --background: #FFFFFF;
+  --foreground: #374151;
+  --card: #FFFFFF;
+  --card-foreground: #374151;
+  --popover: #FFFFFF;
+  --popover-foreground: #374151;
+  --primary: #E91E8C;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F9FAFB;
+  --secondary-foreground: #374151;
+  --muted: #F3F4F6;
+  --muted-foreground: #6B7280;
+  --accent: #FFF1F2;
+  --accent-foreground: #E91E8C;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #F3F4F6;
+  --input: #F3F4F6;
+  --ring: #E91E8C;
+  --chart-1: #E91E8C;
+  --chart-2: #F97316;
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #374151;
+  --sidebar-primary: #E91E8C;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FFF1F2;
+  --sidebar-accent-foreground: #E91E8C;
+  --sidebar-border: #F3F4F6;
+  --sidebar-ring: #E91E8C;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    background-color: #F9FAFB;
+    color: #374151;
+    font-family: 'Wix Madefor Text', system-ui, sans-serif;
+    line-height: 1.6;
+  }
+  html {
+    font-family: 'Wix Madefor Text', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: #1A1A2E;
+    line-height: 1.2;
+    font-family: 'Syne', system-ui, sans-serif;
+  }
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #E91E8C, #F97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Primary button */
+.btn-primary {
+  background: linear-gradient(135deg, #E91E8C, #F97316);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.9; }
+
+/* Ghost button */
+.btn-ghost {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #374151;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: #E91E8C; color: #E91E8C; }
+
+/* SC Card */
+.sc-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  padding: 1.75rem;
+}
+
+/* Dot grid background pattern */
+.dot-grid {
+  background-image: radial-gradient(circle, #E91E8C18 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Nav card hover — gradient border trick */
+.sc-nav-card {
+  position: relative;
+  border: 1px solid #F3F4F6;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.sc-nav-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, #E91E8C, #F97316);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.sc-nav-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(233,30,140,0.12) !important;
+  border-color: transparent;
+}
+.sc-nav-card:hover::before {
+  opacity: 1;
+}
+
+.sc-cta-ghost:hover {
+  border-color: #E91E8C !important;
+  color: #E91E8C !important;
+}
