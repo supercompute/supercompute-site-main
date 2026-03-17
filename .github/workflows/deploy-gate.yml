@@ -1,0 +1,21 @@
+name: Deploy Gate — supercompute.io
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_uuid:
+        description: 'Coolify deployment UUID (leave blank to run smoke tests only)'
+        required: false
+        default: ''
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run deploy gate
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: bash scripts/verify-deploy.sh "${{ github.event.inputs.deployment_uuid }}"
