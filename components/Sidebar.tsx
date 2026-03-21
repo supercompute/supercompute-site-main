@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ConnectWalletButton } from "@/components/ConnectWalletButton";
 
 const navLinks = [
   {
@@ -191,8 +192,13 @@ export default function Sidebar() {
         })}
       </nav>
 
+      {/* Wallet connect */}
+      <div style={{ padding: "0 0.75rem 0.75rem" }}>
+        <ConnectWalletButton />
+      </div>
+
       {/* Bottom status card */}
-      <div style={{ padding: "1rem 0.75rem 0" }}>
+      <div style={{ padding: "0 0.75rem 0" }}>
         <div style={{
           borderRadius: "10px",
           padding: "0.875rem",
