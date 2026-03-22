@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ConnectWalletButton } from "@/components/ConnectWalletButton";
 
 const navLinks = [
   {
@@ -191,46 +192,13 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Connect Wallet */}
-      <div style={{ padding: "0.75rem 0.75rem 0" }}>
-        <a
-          href="/signin"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.5rem",
-            width: "100%",
-            padding: "0.6rem 0.75rem",
-            borderRadius: "8px",
-            border: "1px solid rgba(0,212,255,0.4)",
-            background: "rgba(0,212,255,0.08)",
-            color: "#00D4FF",
-            fontSize: "0.8rem",
-            fontWeight: 600,
-            textDecoration: "none",
-            letterSpacing: "0.03em",
-            transition: "background 0.15s, border-color 0.15s",
-          }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,212,255,0.18)";
-            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,212,255,0.7)";
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,212,255,0.08)";
-            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,212,255,0.4)";
-          }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="5" width="20" height="14" rx="2"/>
-            <path d="M16 12h2"/>
-          </svg>
-          Connect Wallet
-        </a>
+      {/* Wallet connect */}
+      <div style={{ padding: "0 0.75rem 0.75rem" }}>
+        <ConnectWalletButton />
       </div>
 
       {/* Bottom status card */}
-      <div style={{ padding: "1rem 0.75rem 0" }}>
+      <div style={{ padding: "0 0.75rem 0" }}>
         <div style={{
           borderRadius: "10px",
           padding: "0.875rem",

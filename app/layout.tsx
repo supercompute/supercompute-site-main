@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import Sidebar from "@/components/Sidebar";
+import { Web3Providers } from "@/components/Web3Providers";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -25,12 +27,14 @@ export default function RootLayout({
         className={`${geistMono.variable} antialiased`}
         style={{ backgroundColor: "#F9FAFB", color: "#374151", fontFamily: "'Wix Madefor Text', system-ui, sans-serif" }}
       >
-        <div style={{ display: "flex", minHeight: "100vh" }}>
-          <Sidebar />
-          <main style={{ flex: 1, backgroundColor: "#FFFFFF", minHeight: "100vh" }}>
-            {children}
-          </main>
-        </div>
+        <Web3Providers>
+          <div style={{ display: "flex", minHeight: "100vh" }}>
+            <Sidebar />
+            <main style={{ flex: 1, backgroundColor: "#FFFFFF", minHeight: "100vh" }}>
+              {children}
+            </main>
+          </div>
+        </Web3Providers>
       </body>
     </html>
   );
