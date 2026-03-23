@@ -1,14 +1,25 @@
-const productCoins = [
-  { project: "SCOM", coin: "$SCOM", price: "$0.00", volume: "$0", status: "Pre-launch" },
-  { project: "NewsDesk", coin: "$QUANTA", price: "$0.00", volume: "$0", status: "Live" },
-  { project: "Words NFT", coin: "$VERB", price: "$0.00", volume: "$0", status: "In Progress" },
-  { project: "America NFT", coin: "$NATION", price: "$0.00", volume: "$0", status: "In Progress" },
-  { project: "Nodewaste", coin: "TBD", price: "—", volume: "—", status: "Coming Soon" },
-  { project: "Solar Punks", coin: "TBD", price: "—", volume: "—", status: "Coming Soon" },
-  { project: "RBL", coin: "TBD", price: "—", volume: "—", status: "Coming Soon" },
-  { project: "Athletic Club", coin: "TBD", price: "—", volume: "—", status: "Coming Soon" },
-  { project: "Ninja School", coin: "TBD", price: "—", volume: "—", status: "Coming Soon" },
-];
+import { d1Query } from "@/lib/d1";
+
+interface Token {
+  id: number;
+  project: string;
+  coin: string;
+  price: string;
+  volume: string;
+  status: string;
+  sort_order: number;
+}
+
+async function getTokens(): Promise<Token[]> {
+  try {
+    return await d1Query<Token>(
+      "SELECT * FROM tokens ORDER BY sort_order ASC, id ASC"
+    );
+  } catch (err) {
+    console.error("[token/page] Failed to load from D1, using empty list", err);
+    return [];
+  }
+}
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, { bg: string; color: string }> = {
@@ -35,7 +46,9 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-export default function TokenPage() {
+export default async function TokenPage() {
+  const productCoins = await getTokens();
+
   return (
     <div style={{ backgroundColor: "#FFFFFF" }}>
       {/* Hero */}
@@ -267,7 +280,7 @@ export default function TokenPage() {
           </div>
         </div>
 
-        {/* Product Coin Table */}
+        {/* Product Coin Table — live from D1 */}
         <section style={{ marginBottom: "2.5rem" }}>
           <div
             style={{
@@ -301,7 +314,7 @@ export default function TokenPage() {
               <tbody>
                 {productCoins.map((row, i) => (
                   <tr
-                    key={row.project}
+                    key={row.id}
                     style={{
                       backgroundColor: i % 2 === 0 ? "#FFFFFF" : "#FAFAFA",
                       borderTop: "1px solid #F3F4F6",
