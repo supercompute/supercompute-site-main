@@ -1,22 +1,24 @@
-import { d1Query } from "@/lib/d1";
+import { sanityClient } from "@/lib/sanity";
 
 interface Token {
-  id: number;
+  id: string;
   project: string;
   coin: string;
   price: string;
   volume: string;
   status: string;
-  sort_order: number;
 }
 
 async function getTokens(): Promise<Token[]> {
   try {
-    return await d1Query<Token>(
-      "SELECT * FROM tokens ORDER BY sort_order ASC, id ASC"
+    const docs = await sanityClient.fetch(
+      `*[_type == "project"] | order(sortOrder asc, _createdAt asc) {
+        "id": _id, "project": title, coin, price, volume, status
+      }`
     );
+    return docs;
   } catch (err) {
-    console.error("[token/page] Failed to load from D1, using empty list", err);
+    console.error("[token/page] Failed to load from Sanity, using empty list", err);
     return [];
   }
 }
@@ -314,7 +316,7 @@ export default async function TokenPage() {
               <tbody>
                 {productCoins.map((row, i) => (
                   <tr
-                    key={row.id}
+                    key={row.id ?? i}
                     style={{
                       backgroundColor: i % 2 === 0 ? "#FFFFFF" : "#FAFAFA",
                       borderTop: "1px solid #F3F4F6",
