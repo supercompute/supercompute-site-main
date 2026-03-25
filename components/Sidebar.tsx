@@ -2,6 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+import { Web3Providers } from "@/components/Web3Providers";
+
+// Dynamically imported with ssr: false so wagmi never initialises during
+// server-render or page hydration — wallet only wakes up after the page
+// is fully loaded and the user is looking at it.
+const ConnectWalletButton = dynamic(
+  () => import("@/components/ConnectWalletButton").then((m) => m.ConnectWalletButton),
+  { ssr: false, loading: () => null }
+);
 
 const navLinks = [
   {
@@ -64,6 +74,15 @@ const navLinks = [
         <circle cx="9" cy="7" r="4"/>
         <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    ),
+  },
+  {
+    href: "/blog",
+    label: "Blog",
+    icon: (
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
       </svg>
     ),
   },
@@ -201,8 +220,15 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Bottom status card */}
-      <div style={{ padding: "1rem 0.75rem 0" }}>
+      {/* Bottom section: wallet + status */}
+      <div style={{ padding: "1rem 0.75rem 0", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+
+        {/* Connect Wallet — lazy loaded, only fires on user click */}
+        <Web3Providers>
+          <ConnectWalletButton />
+        </Web3Providers>
+
+        {/* Status card */}
         <div style={{
           borderRadius: "10px",
           padding: "0.875rem",
