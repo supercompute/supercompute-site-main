@@ -4,7 +4,6 @@ import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { base } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "@rainbow-me/rainbowkit/styles.css";
 
 // ssr: false → wagmi does NOT try to reconnect on mount from localStorage.
 // This is the key fix: wallet only connects when the user explicitly clicks.

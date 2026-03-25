@@ -3,13 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import { Web3Providers } from "@/components/Web3Providers";
 
-// Dynamically imported with ssr: false so wagmi never initialises during
-// server-render or page hydration — wallet only wakes up after the page
-// is fully loaded and the user is looking at it.
-const ConnectWalletButton = dynamic(
-  () => import("@/components/ConnectWalletButton").then((m) => m.ConnectWalletButton),
+// Single dynamic chunk — providers + button together.
+// ssr: false means it only mounts after full client hydration,
+// keeping the WagmiProvider instance stable across navigation.
+const SidebarWallet = dynamic(
+  () => import("@/components/SidebarWallet"),
   { ssr: false, loading: () => null }
 );
 
@@ -223,10 +222,8 @@ export default function Sidebar() {
       {/* Bottom section: wallet + status */}
       <div style={{ padding: "1rem 0.75rem 0", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
 
-        {/* Connect Wallet — lazy loaded, only fires on user click */}
-        <Web3Providers>
-          <ConnectWalletButton />
-        </Web3Providers>
+        {/* Connect Wallet — single lazy-loaded chunk, stable across navigation */}
+        <SidebarWallet />
 
         {/* Status card */}
         <div style={{
