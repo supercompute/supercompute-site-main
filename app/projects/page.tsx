@@ -1,211 +1,284 @@
-import { sanityClient } from "@/lib/sanity";
+"use client";
 
-interface Project {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  tagline?: string;
-  status: string;
-  sortOrder?: number;
-  coin?: string;
-  repo?: string;
-  website?: string;
-  accentColor?: string;
-  tags?: string[];
-  logo?: { asset: { url: string } };
-}
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Rocket, Plus, Filter } from "lucide-react";
+import ProjectCard, { type ProjectCardData } from "@/components/ProjectCard";
 
-async function getProjects(): Promise<Project[]> {
-  return sanityClient.fetch(
-    `*[_type == "project"] | order(sortOrder asc, _createdAt asc) {
-      _id, title, slug, tagline, status, sortOrder,
-      coin, repo, website, accentColor, tags,
-      logo { asset->{ url } }
-    }`
-  );
-}
+const STATUS_FILTERS = ["All", "Live", "In Progress", "Pre-launch", "Coming Soon"];
 
-function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, { bg: string; color: string }> = {
-    Live:            { bg: "#DCFCE7", color: "#16A34A" },
-    "In Progress":   { bg: "#FEF3C7", color: "#D97706" },
-    "Coming Soon":   { bg: "#F3F4F6", color: "#6B7280" },
-    "Pre-launch":    { bg: "rgba(233,30,140,0.08)", color: "#C91672" },
-  };
-  const s = styles[status] ?? styles["Coming Soon"];
-  return (
-    <span style={{
-      display: "inline-block",
-      backgroundColor: s.bg,
-      color: s.color,
-      borderRadius: "9999px",
-      padding: "0.2rem 0.65rem",
-      fontSize: "0.7rem",
-      fontWeight: 700,
-      letterSpacing: "0.02em",
-      fontFamily: "'Syne', system-ui, sans-serif",
-    }}>
-      {status}
-    </span>
-  );
-}
+export default function ProjectsPage() {
+  const [projects, setProjects] = useState<ProjectCardData[]>([]);
+  const [totals, setTotals] = useState<Record<number, number>>({});
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("All");
 
-const DEFAULT_ACCENT = "#E91E8C";
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/content/projects");
+        const data = await res.json();
+        const projs: ProjectCardData[] = data.projects ?? [];
+        setProjects(projs);
 
-export default async function ProjectsPage() {
-  const projects = await getProjects();
-  const active    = projects.filter((p) => p.status !== "Coming Soon");
-  const upcoming  = projects.filter((p) => p.status === "Coming Soon");
+        // Fetch contribution totals for each project
+        const totalsMap: Record<number, number> = {};
+        await Promise.all(
+          projs.map(async (p) => {
+            const r = await fetch(`/api/content/contributions?project_id=${p.id}`);
+            const d = await r.json();
+            totalsMap[p.id] = d.total_usd ?? 0;
+          })
+        );
+        setTotals(totalsMap);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  const filtered =
+    filter === "All" ? projects : projects.filter((p) => p.status === filter);
+
+  const featured = projects.filter((p) => p.featured === 1);
 
   return (
-    <div style={{ backgroundColor: "#FFFFFF", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#F9FAFB", minHeight: "100vh" }}>
 
-      {/* Hero */}
-      <section style={{
-        background: "linear-gradient(180deg, #FDF2F8 0%, #FFFFFF 60%)",
-        padding: "4rem 1.5rem 3rem",
-        borderBottom: "1px solid #F3F4F6",
-      }}>
-        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-          <div style={{
-            display: "inline-block",
-            background: "linear-gradient(135deg, rgba(233,30,140,0.08), rgba(249,115,22,0.06))",
-            border: "1px solid rgba(233,30,140,0.15)",
-            color: "#C91672",
-            borderRadius: "9999px",
-            padding: "0.25rem 0.875rem",
-            fontSize: "0.72rem",
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase" as const,
-            marginBottom: "1rem",
-          }}>
-            Projects
+      {/* ── Hero ── */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #0F0F1A 0%, #1A0A1E 50%, #0F1A2E 100%)",
+          padding: "3.5rem 2rem 3rem",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Animated blobs */}
+        <style>{`
+          @keyframes blob1 {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(30px,-20px) scale(1.08); }
+            66% { transform: translate(-20px,15px) scale(0.96); }
+          }
+          @keyframes blob2 {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(-25px,20px) scale(1.06); }
+            66% { transform: translate(20px,-10px) scale(0.94); }
+          }
+        `}</style>
+        <div style={{
+          position: "absolute",
+          top: "-60px",
+          left: "-60px",
+          width: "320px",
+          height: "320px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(233,30,140,0.18) 0%, transparent 70%)",
+          animation: "blob1 12s ease-in-out infinite",
+          pointerEvents: "none",
+        }} />
+        <div style={{
+          position: "absolute",
+          bottom: "-80px",
+          right: "-40px",
+          width: "380px",
+          height: "380px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(249,115,22,0.14) 0%, transparent 70%)",
+          animation: "blob2 15s ease-in-out infinite",
+          pointerEvents: "none",
+        }} />
+
+        <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", marginBottom: "1.25rem" }}>
+            <Rocket size={18} color="#E91E8C" />
+            <span style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              color: "#E91E8C",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              fontFamily: "'Syne', system-ui, sans-serif",
+            }}>
+              SUPERCOMPUTE Ecosystem
+            </span>
           </div>
-          <h1 style={{
-            fontSize: "clamp(2rem, 5vw, 3rem)",
-            fontWeight: 800,
-            color: "#0F0F1A",
-            letterSpacing: "-0.03em",
-            lineHeight: 1.1,
-            margin: "0 0 0.75rem",
-            fontFamily: "'Syne', system-ui, sans-serif",
-          }}>
-            Community Projects
+
+          <h1
+            style={{
+              fontSize: "2.25rem",
+              fontWeight: 800,
+              color: "#fff",
+              margin: "0 0 0.875rem",
+              fontFamily: "'Syne', system-ui, sans-serif",
+              lineHeight: 1.15,
+            }}
+          >
+            Projects
           </h1>
-          <p style={{ color: "#6B7280", fontSize: "1rem", lineHeight: 1.6, maxWidth: "520px", margin: 0 }}>
-            Every project built by Supercompute — active, in progress, and coming soon. Back builders and track the ecosystem.
+
+          <p style={{
+            fontSize: "1rem",
+            color: "rgba(255,255,255,0.5)",
+            margin: "0 0 2rem",
+            maxWidth: "520px",
+            lineHeight: 1.6,
+          }}>
+            1 builder · 13 agents. Each project is a live experiment in public building — with its own coin, community, and roadmap.
           </p>
+
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <Link
+              href="/admin/projects"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.65rem 1.25rem",
+                fontSize: "0.875rem",
+                fontWeight: 700,
+                borderRadius: "10px",
+                border: "none",
+                background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                color: "#fff",
+                textDecoration: "none",
+                fontFamily: "'Syne', system-ui, sans-serif",
+              }}
+            >
+              <Plus size={15} />
+              Add Project
+            </Link>
+          </div>
         </div>
-      </section>
+      </div>
 
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
-
-        {/* Active Projects */}
-        {active.length > 0 && (
-          <section style={{ marginBottom: "3.5rem" }}>
-            <div style={{
-              fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase" as const,
-              letterSpacing: "0.1em", color: "#6B7280", marginBottom: "1.25rem",
+      {/* ── Featured projects ── */}
+      {featured.length > 0 && (
+        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "2.5rem 2rem 0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.25rem" }}>
+            <span style={{
+              display: "inline-block",
+              backgroundColor: "#FFF1F2",
+              color: "#E91E8C",
+              borderRadius: "9999px",
+              padding: "0.15rem 0.625rem",
+              fontSize: "0.7rem",
+              fontWeight: 700,
             }}>
-              Active Projects
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem" }}>
-              {active.map((p) => {
-                const accent = p.accentColor || DEFAULT_ACCENT;
-                return (
-                  <div key={p._id} style={{
-                    backgroundColor: "#fff",
-                    borderRadius: "16px",
-                    border: "1px solid #E5E7EB",
-                    boxShadow: "0 1px 8px rgba(0,0,0,0.05)",
-                    padding: "1.75rem",
-                    borderTop: `3px solid ${accent}`,
-                  }}>
-                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-                      <h3 style={{
-                        fontSize: "1rem", fontWeight: 700, color: "#0F0F1A", margin: 0,
-                        fontFamily: "'Syne', system-ui, sans-serif",
-                      }}>{p.title}</h3>
-                      <StatusBadge status={p.status} />
-                    </div>
-                    <p style={{ fontSize: "0.875rem", color: "#6B7280", marginBottom: "1.25rem", lineHeight: 1.55 }}>{p.tagline}</p>
-                    {p.coin && (
-                      <div style={{ fontSize: "0.78rem", marginBottom: "1rem" }}>
-                        <span style={{ color: "#9CA3AF" }}>Token: </span>
-                        <span style={{
-                          fontWeight: 700,
-                          background: "linear-gradient(135deg, #E91E8C, #F97316)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                        }}>{p.coin}</span>
-                      </div>
-                    )}
-                    <button disabled style={{
-                      width: "100%", padding: "0.5rem", fontSize: "0.8rem", fontWeight: 600,
-                      borderRadius: "8px", border: "1px solid #E5E7EB", backgroundColor: "#F9FAFB",
-                      color: "#9CA3AF", cursor: "not-allowed",
-                      fontFamily: "'Syne', system-ui, sans-serif",
-                    }}>
-                      Back this project
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
+              Featured
+            </span>
+            <span style={{ fontSize: "0.75rem", color: "#9CA3AF" }}>Highlighted for this cycle</span>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "1rem",
+            }}
+          >
+            {featured.map((p) => (
+              <ProjectCard key={p.id} project={p} totalRaised={totals[p.id] ?? 0} />
+            ))}
+          </div>
+        </div>
+      )}
 
-        {/* Coming Soon */}
-        {upcoming.length > 0 && (
-          <section>
-            <div style={{
-              fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase" as const,
-              letterSpacing: "0.1em", color: "#6B7280", marginBottom: "1.25rem",
-            }}>
-              Coming Soon · {upcoming.length} projects
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "0.875rem" }}>
-              {upcoming.map((p) => {
-                const accent = p.accentColor || DEFAULT_ACCENT;
-                return (
-                  <div key={p._id} style={{
-                    backgroundColor: "#FAFAFA",
-                    borderRadius: "14px",
-                    padding: "1.5rem",
-                    border: "1px solid #F3F4F6",
-                    borderLeft: `3px solid ${accent}40`,
-                  }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                      <h3 style={{
-                        fontSize: "0.9rem", fontWeight: 700, color: "#0F0F1A", margin: 0,
-                        fontFamily: "'Syne', system-ui, sans-serif",
-                      }}>{p.title}</h3>
-                      <StatusBadge status="Coming Soon" />
-                    </div>
-                    <p style={{ fontSize: "0.8rem", color: "#6B7280", margin: "0 0 1rem", lineHeight: 1.5 }}>{p.tagline}</p>
-                    {p.tags && p.tags.length > 0 && (
-                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.3rem" }}>
-                        {p.tags.slice(0, 3).map((tag) => (
-                          <span key={tag} style={{
-                            fontSize: "0.65rem", fontWeight: 600, color: "#9CA3AF",
-                            backgroundColor: "#F3F4F6", borderRadius: "9999px",
-                            padding: "0.15rem 0.5rem",
-                          }}>{tag}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
+      {/* ── Filter + grid ── */}
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "2.5rem 2rem" }}>
+        {/* Filter bar */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            marginBottom: "1.5rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <Filter size={14} color="#9CA3AF" />
+          {STATUS_FILTERS.map((s) => (
+            <button
+              key={s}
+              onClick={() => setFilter(s)}
+              style={{
+                padding: "0.3rem 0.875rem",
+                fontSize: "0.78rem",
+                fontWeight: 600,
+                borderRadius: "9999px",
+                border: filter === s ? "none" : "1px solid #E5E7EB",
+                background:
+                  filter === s
+                    ? "linear-gradient(135deg, #E91E8C, #F97316)"
+                    : "#fff",
+                color: filter === s ? "#fff" : "#6B7280",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}
+            >
+              {s}
+              {s !== "All" && (
+                <span style={{ marginLeft: "0.375rem", opacity: 0.7 }}>
+                  ({projects.filter((p) => p.status === s).length})
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
 
-        {projects.length === 0 && (
-          <div style={{ textAlign: "center" as const, padding: "5rem 1.5rem", color: "#9CA3AF" }}>
-            <p style={{ fontSize: "1rem", color: "#6B7280" }}>Projects loading soon.</p>
+        {/* Project grid */}
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "3rem", color: "#9CA3AF", fontSize: "0.875rem" }}>
+            Loading projects…
+          </div>
+        ) : filtered.length === 0 ? (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "3rem 2rem",
+              backgroundColor: "#fff",
+              borderRadius: "16px",
+              boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
+            }}
+          >
+            <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>🚀</div>
+            <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#1A1A2E", marginBottom: "0.5rem" }}>
+              No projects yet
+            </h3>
+            <p style={{ color: "#9CA3AF", fontSize: "0.875rem", margin: "0 0 1.25rem" }}>
+              {filter !== "All" ? `No "${filter}" projects found.` : "Start by creating your first project."}
+            </p>
+            <Link
+              href="/admin/projects"
+              style={{
+                display: "inline-block",
+                padding: "0.6rem 1.5rem",
+                fontSize: "0.875rem",
+                fontWeight: 700,
+                borderRadius: "10px",
+                border: "none",
+                background: "linear-gradient(135deg, #E91E8C, #F97316)",
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
+              + Create Project
+            </Link>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "1rem",
+            }}
+          >
+            {filtered.map((p) => (
+              <ProjectCard key={p.id} project={p} totalRaised={totals[p.id] ?? 0} />
+            ))}
           </div>
         )}
       </div>
