@@ -12,29 +12,35 @@ export async function middleware(request: NextRequest) {
 
   if (!isProtected) return NextResponse.next();
 
-  // Read the session cookie
+  // Read the session cookie set by /api/auth/verify (SIWE flow)
   const token = request.cookies.get(SESSION_COOKIE)?.value;
 
   if (!token) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(loginUrl);
+    const signInUrl = new URL("/signin", request.url);
+    signInUrl.searchParams.set("next", pathname);
+    return NextResponse.redirect(signInUrl);
   }
 
   const session = await verifySessionToken(token);
 
   if (!session) {
-    // Invalid or expired token — clear it and redirect
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
-    const response = NextResponse.redirect(loginUrl);
+    // Invalid or expired token — clear it and redirect to SIWE sign-in
+    const signInUrl = new URL("/signin", request.url);
+    signInUrl.searchParams.set("next", pathname);
+    const response = NextResponse.redirect(signInUrl);
     response.cookies.delete(SESSION_COOKIE);
     return response;
   }
 
-  // Attach email to a header for downstream use (optional)
+  // /admin/* requires role: admin — non-admins go to dashboard
+  if (pathname.startsWith("/admin") && session.role !== "admin") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  // Attach wallet address for downstream use (SSR headers)
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-user-email", session.email);
+  requestHeaders.set("x-user-address", session.address);
+  requestHeaders.set("x-user-role", session.role);
 
   return NextResponse.next({ request: { headers: requestHeaders } });
 }

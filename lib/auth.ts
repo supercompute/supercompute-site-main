@@ -4,7 +4,7 @@
 export const SESSION_COOKIE = "sc_session";
 export const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-// Protected routes that require login
+// Protected routes that require a valid SIWE session
 export const PROTECTED_PREFIXES = [
   "/admin",
   "/dashboard",
@@ -41,19 +41,28 @@ function fromBase64url(str: string): Uint8Array {
 
 // ─── Sign / verify ────────────────────────────────────────────────────────────
 
-export async function createSessionToken(email: string): Promise<string> {
+export async function createSessionToken(
+  address: string,
+  role = "user"
+): Promise<string> {
   const secret = process.env.SESSION_SECRET ?? "sc-change-me-in-prod";
   const payload = toBase64url(
-    new TextEncoder().encode(JSON.stringify({ email, exp: Date.now() + SESSION_TTL_MS }))
+    new TextEncoder().encode(
+      JSON.stringify({ address, role, exp: Date.now() + SESSION_TTL_MS })
+    )
   );
   const key = await getKey(secret);
-  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload));
+  const sig = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(payload)
+  );
   return `${payload}.${toBase64url(sig)}`;
 }
 
 export async function verifySessionToken(
   token: string
-): Promise<{ email: string } | null> {
+): Promise<{ address: string; role: string } | null> {
   try {
     const [payload, sig] = token.split(".");
     if (!payload || !sig) return null;
@@ -69,22 +78,12 @@ export async function verifySessionToken(
     );
     if (!valid) return null;
 
-    const data = JSON.parse(new TextDecoder().decode(fromBase64url(payload)));
+    const data = JSON.parse(
+      new TextDecoder().decode(fromBase64url(payload))
+    );
     if (typeof data.exp !== "number" || data.exp < Date.now()) return null;
-    return { email: data.email };
+    return { address: data.address, role: data.role ?? "user" };
   } catch {
     return null;
   }
-}
-
-// ─── Credential check ─────────────────────────────────────────────────────────
-
-export function checkCredentials(email: string, password: string): boolean {
-  const adminEmail = process.env.ADMIN_EMAIL ?? "service@supercompute.io";
-  const adminPassword = process.env.ADMIN_PASSWORD ?? "";
-  if (!adminPassword) return false; // Must set env var
-  return (
-    email.toLowerCase().trim() === adminEmail.toLowerCase().trim() &&
-    password === adminPassword
-  );
 }
