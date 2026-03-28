@@ -1,13 +1,19 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { sanityClient, Article } from "@/lib/sanity";
 
 async function getArticles(): Promise<Article[]> {
-  return sanityClient.fetch(
-    `*[_type == "article" && status == "published"] | order(publishedAt desc) {
-      _id, title, slug, series, status, publishedAt, excerpt,
-      coverImage { asset->{ url }, alt }
-    }`
-  );
+  try {
+    return await sanityClient.fetch(
+      `*[_type == "article" && status == "published"] | order(publishedAt desc) {
+        _id, title, slug, series, status, publishedAt, excerpt,
+        coverImage { asset->{ url }, alt }
+      }`
+    );
+  } catch {
+    return [];
+  }
 }
 
 const SERIES_COLORS: Record<string, { bg: string; border: string; text: string }> = {

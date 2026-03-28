@@ -6,17 +6,21 @@ import { PortableText } from "@portabletext/react";
 import { sanityClient, Article } from "@/lib/sanity";
 
 async function getArticle(slug: string): Promise<Article | null> {
-  return sanityClient.fetch(
-    `*[_type == "article" && slug.current == $slug][0] {
-      _id, title, slug, series, status, publishedAt, excerpt,
-      coverImage { asset->{ url }, alt },
-      pfpImage { asset->{ url } },
-      body,
-      tags,
-      agentMeta
-    }`,
-    { slug }
-  );
+  try {
+    return await sanityClient.fetch(
+      `*[_type == "article" && slug.current == $slug][0] {
+        _id, title, slug, series, status, publishedAt, excerpt,
+        coverImage { asset->{ url }, alt },
+        pfpImage { asset->{ url } },
+        body,
+        tags,
+        agentMeta
+      }`,
+      { slug }
+    );
+  } catch {
+    return null;
+  }
 }
 
 async function getRelated(currentId: string, series?: string): Promise<Article[]> {
