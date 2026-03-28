@@ -1,4 +1,19 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import ProtocolCarousel from "@/components/ProtocolCarousel";
+
+interface Protocol {
+  id: number;
+  name: string;
+  slug: string;
+  chain: string;
+  category: string;
+  tvl_usd?: number;
+  docs_url?: string;
+  app_url?: string;
+}
 
 const courseCategories = [
   {
@@ -44,6 +59,15 @@ const courseCategories = [
 ];
 
 export default function SchoolPage() {
+  const [protocols, setProtocols] = useState<Protocol[]>([]);
+
+  useEffect(() => {
+    fetch("/api/content/protocols")
+      .then((r) => r.json())
+      .then((d) => setProtocols(d.protocols ?? []))
+      .catch(() => {});
+  }, []);
+
   return (
     <div style={{ backgroundColor: "#FFFFFF" }}>
       {/* Hero */}
@@ -85,6 +109,31 @@ export default function SchoolPage() {
         </div>
       </section>
 
+      {/* Protocol Strip */}
+      <div
+        style={{
+          background: "#0F0F1A",
+          padding: "1.5rem 0",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+        }}
+      >
+        <div style={{ maxWidth: "900px", margin: "0 auto 0.75rem", padding: "0 1.5rem" }}>
+          <span
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase" as const,
+              letterSpacing: "0.1em",
+              color: "rgba(255,255,255,0.4)",
+            }}
+          >
+            Protocols We Cover
+          </span>
+        </div>
+        <ProtocolCarousel protocols={protocols} />
+      </div>
+
       <div style={{ maxWidth: "900px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
         {/* Course Categories */}
         <section style={{ marginBottom: "3.5rem" }}>
@@ -92,7 +141,7 @@ export default function SchoolPage() {
             style={{
               fontSize: "0.7rem",
               fontWeight: 700,
-              textTransform: "uppercase",
+              textTransform: "uppercase" as const,
               letterSpacing: "0.1em",
               color: "#6B7280",
               marginBottom: "1.25rem",
@@ -155,13 +204,86 @@ export default function SchoolPage() {
           </div>
         </section>
 
+        {/* Protocol Browser */}
+        {protocols.length > 0 && (
+          <section style={{ marginBottom: "3.5rem" }}>
+            <div
+              style={{
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                textTransform: "uppercase" as const,
+                letterSpacing: "0.1em",
+                color: "#6B7280",
+                marginBottom: "1.25rem",
+              }}
+            >
+              Protocol Browser
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "0.75rem" }}>
+              {protocols.slice(0, 12).map((p) => (
+                <div
+                  key={p.id}
+                  style={{
+                    backgroundColor: "#fff",
+                    borderRadius: "12px",
+                    boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
+                    padding: "1rem 1.25rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "10px",
+                      background: "linear-gradient(135deg, #E91E8C22, #F9731622)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1rem",
+                      flexShrink: 0,
+                    }}
+                  >
+                    ⚡
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontWeight: 700, fontSize: "0.875rem", color: "#1A1A2E" }}>{p.name}</div>
+                    <div style={{ fontSize: "0.72rem", color: "#9CA3AF" }}>
+                      {p.chain} · {p.category}
+                    </div>
+                  </div>
+                  {p.docs_url && (
+                    <a
+                      href={p.docs_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        marginLeft: "auto",
+                        fontSize: "0.7rem",
+                        color: "#E91E8C",
+                        textDecoration: "none",
+                        flexShrink: 0,
+                        fontWeight: 600,
+                      }}
+                    >
+                      Docs →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* NewsDesk Articles */}
         <section style={{ marginBottom: "2rem" }}>
           <div
             style={{
               fontSize: "0.7rem",
               fontWeight: 700,
-              textTransform: "uppercase",
+              textTransform: "uppercase" as const,
               letterSpacing: "0.1em",
               color: "#6B7280",
               marginBottom: "1.25rem",
@@ -185,7 +307,7 @@ export default function SchoolPage() {
                 </p>
               </div>
               <Link
-                href="/projects"
+                href="/newsdesk"
                 style={{
                   display: "inline-block",
                   padding: "0.5rem 1rem",

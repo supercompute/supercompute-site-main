@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Syne:wght@600;700;800&display=swap');
+@import "@rainbow-me/rainbowkit/styles.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -202,3 +203,40 @@
   border-color: #E91E8C !important;
   color: #E91E8C !important;
 }
+
+/* Blog article prose styles */
+.prose-sc { color: #374151; font-size: 1rem; line-height: 1.75; }
+.prose-sc h1, .prose-sc h2, .prose-sc h3, .prose-sc h4 {
+  font-family: 'Syne', system-ui, sans-serif;
+  font-weight: 800;
+  color: #0F0F1A;
+  letter-spacing: -0.02em;
+  margin: 2rem 0 0.75rem;
+  line-height: 1.2;
+}
+.prose-sc h1 { font-size: clamp(1.6rem, 4vw, 2.25rem); }
+.prose-sc h2 { font-size: clamp(1.3rem, 3vw, 1.65rem); }
+.prose-sc h3 { font-size: 1.15rem; }
+.prose-sc p { margin: 0 0 1.25rem; }
+.prose-sc a { color: #E91E8C; text-decoration: underline; text-underline-offset: 3px; }
+.prose-sc a:hover { color: #F97316; }
+.prose-sc blockquote {
+  border-left: 3px solid #E91E8C;
+  padding: 0.5rem 0 0.5rem 1.25rem;
+  margin: 1.5rem 0;
+  color: #4B5563;
+  font-style: italic;
+}
+.prose-sc ul, .prose-sc ol { padding-left: 1.5rem; margin: 0 0 1.25rem; }
+.prose-sc li { margin-bottom: 0.4rem; }
+.prose-sc code {
+  background: #F3F4F6;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.88em;
+  font-family: var(--font-geist-mono), monospace;
+}
+.prose-sc pre { background: #0F0F1A; border-radius: 12px; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; }
+.prose-sc pre code { background: none; padding: 0; color: #E5E7EB; }
+.prose-sc img { border-radius: 12px; max-width: 100%; margin: 1.5rem 0; }
+.prose-sc strong { font-weight: 700; color: #111827; }

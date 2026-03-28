@@ -6,6 +6,7 @@ export function ConnectWalletButton() {
   return (
     <ConnectButton.Custom>
       {({ account, openConnectModal, mounted }) => {
+        // mounted guard: renders nothing during SSR / before hydration
         if (!mounted) return null;
 
         if (!account) {
@@ -43,18 +44,16 @@ export function ConnectWalletButton() {
         const truncated = `${addr.slice(0, 6)}…${addr.slice(-4)}`;
 
         return (
-          <div
-            style={{
-              width: "100%",
-              padding: "0.5rem 0.75rem",
-              borderRadius: "8px",
-              border: "1px solid rgba(233,30,140,0.25)",
-              background: "linear-gradient(135deg, rgba(233,30,140,0.1), rgba(249,115,22,0.07))",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-            }}
-          >
+          <div style={{
+            width: "100%",
+            padding: "0.5rem 0.75rem",
+            borderRadius: "8px",
+            border: "1px solid rgba(233,30,140,0.25)",
+            background: "linear-gradient(135deg, rgba(233,30,140,0.1), rgba(249,115,22,0.07))",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}>
             <span style={{
               width: "7px",
               height: "7px",
