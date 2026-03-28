@@ -1,11 +1,26 @@
-import { createClient } from "@sanity/client";
+import { createClient, type SanityClient } from "@sanity/client";
 
-export const sanityClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  apiVersion: "2024-01-01",
-  token: process.env.SANITY_API_TOKEN,
-  useCdn: false,
+// Lazy — client is only created on first use, not at module load time.
+// This prevents build failures when NEXT_PUBLIC_SANITY_PROJECT_ID is not set in CI.
+let _client: SanityClient | null = null;
+
+function getClient(): SanityClient {
+  if (!_client) {
+    _client = createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+      apiVersion: "2024-01-01",
+      token: process.env.SANITY_API_TOKEN,
+      useCdn: false,
+    });
+  }
+  return _client;
+}
+
+export const sanityClient = new Proxy({} as SanityClient, {
+  get(_, prop) {
+    return getClient()[prop as keyof SanityClient];
+  },
 });
 
 export interface Article {
