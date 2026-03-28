@@ -3,13 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-const writeClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  apiVersion: "2024-01-01",
-  token: process.env.SANITY_API_TOKEN,
-  useCdn: false,
-});
+function getClient() {
+  return createClient({
+    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+    apiVersion: "2024-01-01",
+    token: process.env.SANITY_API_TOKEN,
+    useCdn: false,
+  });
+}
 
 function toRow(doc: Record<string, unknown>, i: number) {
   return {
@@ -25,7 +27,7 @@ function toRow(doc: Record<string, unknown>, i: number) {
 
 export async function GET() {
   try {
-    const docs = await writeClient.fetch(
+    const docs = await getClient().fetch(
       `*[_type == "project"] | order(sortOrder asc, _createdAt asc) {
         _id, title, coin, price, volume, status, sortOrder
       }`
@@ -42,7 +44,7 @@ export async function PUT(req: NextRequest) {
     const body = await req.json();
     const { id, project, coin, price, volume, status, sort_order } = body;
     if (!id) return NextResponse.json({ error: "id is required" }, { status: 400 });
-    await writeClient.patch(id).set({
+    await getClient().patch(id).set({
       title: project,
       coin: coin ?? "TBD",
       price: price ?? "—",
@@ -63,7 +65,7 @@ export async function POST(req: NextRequest) {
     const { project, coin, price, volume, status, sort_order } = body;
     if (!project) return NextResponse.json({ error: "project is required" }, { status: 400 });
     const slugCurrent = project.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-    const doc = await writeClient.create({
+    const doc = await getClient().create({
       _type: "project",
       title: project,
       coin: coin ?? "TBD",
@@ -85,7 +87,7 @@ export async function DELETE(req: NextRequest) {
     const body = await req.json();
     const { id } = body;
     if (!id) return NextResponse.json({ error: "id is required" }, { status: 400 });
-    await writeClient.delete(id);
+    await getClient().delete(id);
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[DELETE /api/content/tokens]", err);
