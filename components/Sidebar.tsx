@@ -338,6 +338,22 @@ export default function Sidebar() {
           </svg>
           Sign out
         </button>
+
+        {/* Version */}
+        <div style={{
+          marginTop: "0.75rem",
+          paddingTop: "0.75rem",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.375rem",
+        }}>
+          <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.15)", fontFamily: "'Geist Mono', monospace" }}>
+            v0.1.0
+          </span>
+          <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.08)" }}>·</span>
+          <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.15)" }}>supercompute.io</span>
+        </div>
       </div>
     </aside>
   );
