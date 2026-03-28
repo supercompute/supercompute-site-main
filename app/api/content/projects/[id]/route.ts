@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { d1Query } from "@/lib/d1";
 
 export async function GET(

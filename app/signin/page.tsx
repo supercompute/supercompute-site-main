@@ -7,7 +7,7 @@
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAccount, useSignMessage } from "wagmi";
-import { SiweMessage } from "siwe";
+import { createSiweMessage } from "viem/siwe";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 function SignInForm() {
@@ -31,7 +31,7 @@ function SignInForm() {
       const nonceRes = await fetch("/api/auth/nonce");
       const { nonce } = await nonceRes.json();
 
-      const message = new SiweMessage({
+      const messageStr = createSiweMessage({
         domain: window.location.host,
         address,
         statement: "Sign in to SUPERCOMPUTE",
@@ -41,7 +41,6 @@ function SignInForm() {
         nonce,
       });
 
-      const messageStr = message.prepareMessage();
       const signature = await signMessageAsync({ message: messageStr });
 
       setStatus("verifying");

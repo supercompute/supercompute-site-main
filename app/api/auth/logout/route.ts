@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { SESSION_COOKIE } from "@/lib/auth";
 
 export async function POST() {

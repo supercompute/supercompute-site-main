@@ -1,10 +1,17 @@
-// SIWE verification endpoint — the CF Worker auth endpoint.
-// Verifies EIP-4361 signature, upserts D1 user record, issues JWT cookie.
-import { SiweMessage } from "siwe";
+// SIWE verification endpoint — edge runtime, viem-based signature check.
+// Issues JWT cookie on successful verification.
+import { createPublicClient, http } from "viem";
+import { base } from "viem/chains";
+import { parseSiweMessage } from "viem/siwe";
 import { createSessionToken, SESSION_COOKIE, SESSION_TTL_MS } from "@/lib/auth";
 import { d1Query } from "@/lib/d1";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
+
+const publicClient = createPublicClient({
+  chain: base,
+  transport: http(),
+});
 
 export async function POST(request: Request) {
   try {
@@ -18,17 +25,20 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify EIP-4361 SIWE signature
-    const siweMessage = new SiweMessage(message);
-    const result = await siweMessage.verify({ signature });
+    // Verify EIP-4361 SIWE signature (edge-compatible via viem)
+    const valid = await publicClient.verifySiweMessage({
+      message,
+      signature: signature as `0x${string}`,
+    });
 
-    if (!result.success || !result.data?.address) {
+    if (!valid) {
       return Response.json({ error: "Invalid signature" }, { status: 401 });
     }
 
-    const address = result.data.address.toLowerCase();
+    const parsed = parseSiweMessage(message);
+    const address = (parsed.address ?? "").toLowerCase();
 
-    // Find or create the user in D1; fall through on DB error so auth still works
+    // Find or create user in D1; fall through on DB error so auth still works
     let role = "user";
     try {
       const existing = await d1Query<{ role: string }>(
@@ -41,8 +51,7 @@ export async function POST(request: Request) {
       } else {
         const id = crypto.randomUUID();
         await d1Query(
-          `INSERT INTO users (id, email, name, wallet_address, role)
-           VALUES (?, ?, ?, ?, ?)`,
+          `INSERT INTO users (id, email, name, wallet_address, role) VALUES (?, ?, ?, ?, ?)`,
           [id, `${address}@wallet.siwe`, address.slice(0, 10), address, "user"]
         );
       }

@@ -1,5 +1,7 @@
 // Returns the current session state read from the JWT cookie.
 // AuthContext polls this on mount to determine isAuthenticated.
+export const runtime = "edge";
+
 import { cookies } from "next/headers";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 

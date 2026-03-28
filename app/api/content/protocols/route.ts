@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { d1Query } from "@/lib/d1";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 // GET /api/content/protocols?chain=Base&category=lending&limit=20
 export async function GET(req: NextRequest) {

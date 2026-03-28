@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { d1Query } from "@/lib/d1";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 const ALL_FIELDS = [
   "name", "tagline", "description", "repo", "coin", "status", "sort_order",
